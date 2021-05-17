@@ -1,5 +1,8 @@
 # OIVAN PROJECT
 
+- Framework: Sinatra (newest version)
+- Ruby version: 2.7.2
+
 ## Setup
 
 ### Development
