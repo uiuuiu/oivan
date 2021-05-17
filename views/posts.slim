@@ -1,0 +1,8 @@
+- @posts.each do |post|
+  tr id="#{post.id}"
+    td
+      a href="/posts/#{post.id}"
+        = post.title
+  tr id="#{post.id}-user"
+    td
+      = post.author

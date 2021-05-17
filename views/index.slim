@@ -1,0 +1,21 @@
+h1 This is homepage 
+table
+  tbody
+    == slim :posts, layout: false
+
+button type="button" id="more-btn" More
+
+javascript:
+  var page = parseInt("#{@page}") + 1;
+  $(document).on("ready", function() {
+    $("#more-btn").on("click", function() {
+      $.ajax({
+        type: 'get',
+        url: "/posts?page=" + page,
+        success: function(result) {
+          page += 1;
+          $("table tbody").append(result);
+        }
+      });
+    })
+  })
