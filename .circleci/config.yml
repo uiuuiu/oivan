@@ -37,7 +37,7 @@ jobs:
       - checkout
       - ruby/install-deps
       - run: RACK_ENV=test bundle exec rake storage:create
-      - run: rspec spec
+      - run: bundle exec rspec spec
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
