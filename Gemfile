@@ -19,7 +19,6 @@ gem 'sinatra-cache'
 gem 'activesupport', '~> 5.0', '>= 5.0.0.1'
 gem 'compass'
 
-
 group :development do
     gem 'pry'
 end

@@ -22,7 +22,7 @@ class BaseModel
     end
 
     def find_by_id id
-      all[id] || all[id.to_s]
+      all[id.to_i]
     end
 
     def bulk_insert collections

@@ -14,7 +14,7 @@ class App < Sinatra::Base
   set :compass_gem_root, Gem.loaded_specs['compass'].full_gem_path
   set :digest_assets, false
   register(Sinatra::Cache)
-  set :cache_enabled, true  # turn it on
+  set :cache_enabled, true
 
   helpers Sinatra::HTMLEscapeHelper
   helpers Sinatra::AssetHelpers
@@ -69,7 +69,7 @@ class App < Sinatra::Base
     scanner = Data::Scanners::BestNewsScanner.new
     fetcher = Data::Fetcher.new
     @posts = fetcher.get_all(@page, scanner)
-    slim :posts, layout: false
+    slim :posts, layout: false, cache: false
   end
 
   get "/posts/:id" do
