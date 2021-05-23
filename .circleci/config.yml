@@ -40,6 +40,8 @@ jobs:
       - ruby/rspec-test
 
   deploy:
+    machine:
+      enabled: true
     steps:
       - add_ssh_keys:
         fingerprints:
