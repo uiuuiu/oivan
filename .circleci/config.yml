@@ -52,14 +52,14 @@ jobs:
         fingerprints:
           - "31:b5:e1:67:b7:d1:2a:68:ca:89:bc:19:dc:82:8f:13"
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
-      - run:
-          name: deploy
-          command: |
-            if [ "${CIRCLE_BRANCH}" = "main" ]; then
-              rsync -avce ssh $OIVAN_BUILD_DIR root@45.77.244.152:/srv/oivan
-            else
-              echo "Not master branch, dry run only"
-            fi
+      # - run:
+      #     name: deploy
+      #     command: |
+      #       if [ "${CIRCLE_BRANCH}" = "main" ]; then
+      #         rsync -avce ssh $OIVAN_BUILD_DIR root@45.77.244.152:/srv/oivan
+      #       else
+      #         echo "Not master branch, dry run only"
+      #       fi
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
