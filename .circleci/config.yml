@@ -50,7 +50,7 @@ jobs:
     steps:
       - add_ssh_keys:
         fingerprints:
-          - "7e:61:47:d4:28:fe:19:72:10:41:74:02:e1:0d:f0:fd"
+          - "31:b5:e1:67:b7:d1:2a:68:ca:89:bc:19:dc:82:8f:13"
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
       - run:
           name: deploy
