@@ -45,7 +45,7 @@ jobs:
         fingerprints:
           - "7e:61:47:d4:28:fe:19:72:10:41:74:02:e1:0d:f0:fd"
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
-      - deploy:
+      - run:
           name: deploy
           command: |
             if [ "${CIRCLE_BRANCH}" = "main" ]; then
