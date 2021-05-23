@@ -10,12 +10,11 @@ jobs:
     docker:
       - image: cimg/ruby:2.7-node # use a tailored CircleCI docker image.
         auth:
-          username: duydyy
+          username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout # pull down our git code.
-      - run: bundle install # use the ruby orb to install dependencies
-      - run: bundle exec rake storage:create
+      - ruby/install-deps # use the ruby orb to install dependencies
 
   test:  # our next job, called "test"
     # we run "parallel job containers" to enable speeding up our tests;
@@ -33,30 +32,12 @@ jobs:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
       RAILS_ENV: test
-      OIVAN_BUILD_DIR: ~/oivan/public
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout
       - ruby/install-deps
       - run: RACK_ENV=test bundle exec rake storage:create
       - run: rspec spec
-
-  # deploy:
-  #   machine:
-  #     enabled: true
-  #   steps:
-  #     - add_ssh_keys:
-  #       fingerprints:
-  #         - "7e:61:47:d4:28:fe:19:72:10:41:74:02:e1:0d:f0:fd"
-  #     - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
-  #     - run:
-  #         name: deploy
-  #         command: |
-  #           if [ "${CIRCLE_BRANCH}" = "main" ]; then
-  #             rsync -avce ssh $OIVAN_BUILD_DIR root@45.77.244.152:/srv/oivan
-  #           else
-  #             echo "Not master branch, dry run only"
-  #           fi
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
@@ -65,8 +46,5 @@ workflows:
     jobs:             # The list of jobs we run as part of this workflow.
       - build         # Run build first.
       - test:         # Then run test,
-        requires:   # Test requires that build passes for it to run.
-          - build   # Finally, run the build job.
-      # - deploy:
-      #   requires:
-      #     - test
+          requires:   # Test requires that build passes for it to run.
+            - build   # Finally, run the build job.
