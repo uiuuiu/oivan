@@ -40,6 +40,11 @@ jobs:
       - run: bundle exec rspec spec
   
   deploy:
+    docker:
+      - image: cimg/ruby:2.7-node # use a tailored CircleCI docker image.
+        auth:
+          username: duydyy
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     environment:
       OIVAN_BUILD_DIR: '/oivan'
     steps:
