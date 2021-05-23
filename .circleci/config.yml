@@ -40,8 +40,6 @@ jobs:
       - run: bundle exec rspec spec
   
   deploy:
-    machine:
-      enabled: true
     environment:
       OIVAN_BUILD_DIR: '/oivan'
     steps:
