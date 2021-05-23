@@ -10,7 +10,7 @@ jobs:
     docker:
       - image: cimg/ruby:2.7-node # use a tailored CircleCI docker image.
         auth:
-          username: mydockerhub-user
+          username: duydyy
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout # pull down our git code.
@@ -24,7 +24,7 @@ jobs:
     docker:
       - image: cimg/ruby:2.7-node # this is our primary docker image, where step commands run.
         auth:
-          username: mydockerhub-user
+          username: duydyy
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 
     # environment variables specific to Ruby/Rails, applied to the primary container.
