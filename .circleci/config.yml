@@ -48,7 +48,6 @@ jobs:
     environment:
       OIVAN_BUILD_DIR: '/oivan'
     steps:
-      - build
       - add_ssh_keys:
         fingerprints:
           - "7e:61:47:d4:28:fe:19:72:10:41:74:02:e1:0d:f0:fd"
