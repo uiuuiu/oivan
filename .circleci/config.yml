@@ -55,6 +55,7 @@ jobs:
       - run: ssh-keyscan 45.77.244.152 >> ~/.ssh/known_hosts
       - run: sudo apt update
       - run: sudo apt install rsync
+      - build
       - run:
           name: deploy
           command: |
