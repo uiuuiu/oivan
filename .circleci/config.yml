@@ -48,7 +48,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     working_directory: '~/oivan'
     environment:
-      OIVAN_BUILD_DIR: '~/oivan'
+      OIVAN_BUILD_DIR: '/home/circleci/oivan'
     steps:
       - add_ssh_keys:
           fingerprints:
