@@ -46,6 +46,7 @@ jobs:
         auth:
           username: duydyy
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    working_directory: '~/oivan'
     environment:
       OIVAN_BUILD_DIR: '~/oivan'
     steps:
@@ -55,7 +56,8 @@ jobs:
       - run: ssh-keyscan 45.77.244.152 >> ~/.ssh/known_hosts
       - run: sudo apt update
       - run: sudo apt install rsync
-      - build
+      - checkout # pull down our git code.
+      - ruby/install-deps # use the ruby orb to install dependencies
       - run:
           name: deploy
           command: |
