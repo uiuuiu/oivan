@@ -12,6 +12,7 @@ jobs:
         auth:
           username: duydyy
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    working_directory: '~/oivan'
     steps:
       - checkout # pull down our git code.
       - ruby/install-deps # use the ruby orb to install dependencies
@@ -46,7 +47,7 @@ jobs:
           username: duydyy
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     environment:
-      OIVAN_BUILD_DIR: '/oivan'
+      OIVAN_BUILD_DIR: '~/oivan'
     steps:
       - add_ssh_keys:
           fingerprints:
