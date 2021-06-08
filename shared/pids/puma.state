@@ -1,0 +1,5 @@
+---
+pid: 4653
+control_url: unix:///tmp/puma-status-1623142308181-4653
+control_auth_token: 0aefcb237487d5659c2039e587d826db
+running_from: "/home/duydyy/PROJECTS/oivan"

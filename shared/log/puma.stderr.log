@@ -1,0 +1,8 @@
+=== puma startup: 2021-06-08 15:50:07 +0700 ===
+=== puma startup: 2021-06-08 15:51:48 +0700 ===
+/home/duydyy/PROJECTS/oivan/data/scanners/base.rb:1: warning: constant ::Data is deprecated
+/home/duydyy/PROJECTS/oivan/data/fetcher.rb:1: warning: constant ::Data is deprecated
+/home/duydyy/PROJECTS/oivan/data/writor.rb:1: warning: constant ::Data is deprecated
+/home/duydyy/PROJECTS/oivan/data/scanners/best_news_scanner.rb:3: warning: constant ::Data is deprecated
+:public is no longer used to avoid overloading Module#public, use :public_folder or :public_dir instead
+	from /home/duydyy/PROJECTS/oivan/app.rb:10:in `<class:App>'
