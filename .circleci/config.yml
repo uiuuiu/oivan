@@ -12,7 +12,7 @@ jobs:
         auth:
           username: duydyy
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    working_directory: '/oivan'
+    working_directory: '~/oivan'
     steps:
       - checkout # pull down our git code.
       - ruby/install-deps # use the ruby orb to install dependencies
@@ -47,7 +47,7 @@ jobs:
           username: duydyy
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     environment:
-      OIVAN_BUILD_DIR: '/oivan'
+      OIVAN_BUILD_DIR: '~/oivan'
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -59,7 +59,7 @@ jobs:
           name: deploy
           command: |
             if [ "${CIRCLE_BRANCH}" = "main" ]; then
-              rsync -av --progress $OIVAN_BUILD_DIR root@45.77.244.152:/srv/oivan
+              rsync -avce $OIVAN_BUILD_DIR root@45.77.244.152:/srv/oivan
             else
               echo "Not master branch, dry run only"
             fi
