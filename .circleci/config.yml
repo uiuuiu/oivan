@@ -59,7 +59,7 @@ jobs:
           name: deploy
           command: |
             if [ "${CIRCLE_BRANCH}" = "main" ]; then
-              rsync -avz $OIVAN_BUILD_DIR root@45.77.244.152:/srv/oivan
+              rsync -av --progress $OIVAN_BUILD_DIR root@45.77.244.152:/srv/oivan
             else
               echo "Not master branch, dry run only"
             fi
