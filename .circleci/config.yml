@@ -49,7 +49,7 @@ jobs:
     working_directory: '~/oivan'
     steps:
       - attach_workspace:
-        at: ./build
+          at: ./build
       - add_ssh_keys:
           fingerprints:
             - "a7:6e:c6:74:f5:3a:1a:e4:4c:87:2e:96:24:21:a4:cc"
