@@ -50,7 +50,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "f5:00:70:57:3c:b3:68:45:f5:e7:dc:dc:ee:02:93:a9"
+            - "a7:6e:c6:74:f5:3a:1a:e4:4c:87:2e:96:24:21:a4:cc"
       - run: ssh-keyscan 45.77.244.152 >> ~/.ssh/known_hosts
       - run: sudo apt update
       - run: sudo apt install rsync
