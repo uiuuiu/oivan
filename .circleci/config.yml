@@ -17,14 +17,10 @@ executors:
 jobs:
   build: # our first job, named "build"
     executor: my-executor
-    working_directory: ~/r
+    working_directory: ~/oivan
     steps:
       - checkout # pull down our git code.
       - ruby/install-deps # use the ruby orb to install dependencies
-      - persist_to_workspace:
-          root: "~"
-          paths:
-            - r/build
 
   test:  # our next job, called "test"
     # we run "parallel job containers" to enable speeding up our tests;
@@ -32,6 +28,7 @@ jobs:
     parallelism: 3
     # here we set TWO docker images.
     executor: my-executor
+    working_directory: ~/oivan
 
     # environment variables specific to Ruby/Rails, applied to the primary container.
     environment:
@@ -47,9 +44,8 @@ jobs:
   
   deploy:
     executor: my-executor
+    working_directory: ~/oivan
     steps:
-      - attach_workspace:
-          at: ./build
       - add_ssh_keys:
           fingerprints:
             - "a7:6e:c6:74:f5:3a:1a:e4:4c:87:2e:96:24:21:a4:cc"
@@ -62,7 +58,7 @@ jobs:
           name: deploy
           command: |
             if [ "${CIRCLE_BRANCH}" = "main" ]; then
-              rsync -avz -e "ssh" --progress build root@45.77.244.152:/srv/oivan
+              rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git ~/oivan/ root@45.77.244.152:/srv/oivan
             else
               echo "Not master branch, dry run only"
             fi
