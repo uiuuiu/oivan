@@ -49,8 +49,8 @@ jobs:
       - ruby/install-deps
       - run: RACK_ENV=test bundle exec rake storage:create
       - run: bundle exec rspec spec
-  
-  deploy:
+
+  deploy-dev:
     executor: my-executor
     working_directory: ~/oivan
     steps:
@@ -64,16 +64,71 @@ jobs:
       - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
           key: deps1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
       - ruby/install-deps # use the ruby orb to install dependencies
+      - run: bundle exec rake storage:create
       - run:
           name: deploy
-          command: |
-            if [ "${CIRCLE_BRANCH}" = "main" ]; then
-              rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git ~/oivan/ root@45.77.244.152:/srv/oivan/prd
-            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
-              rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git ~/oivan/ root@45.77.244.152:/srv/oivan/dev
-            else
-              echo "Not master branch, dry run only"
-            fi
+          command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git ~/oivan/ root@45.77.244.152:/srv/oivan/dev
+      - run:
+          name: restart services
+          command: ssh root@45.77.244.152 'sudo systemctl restart oivan_dev.service'
+
+  deploy-prd:
+    executor: my-executor
+    working_directory: ~/oivan
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "a7:6e:c6:74:f5:3a:1a:e4:4c:87:2e:96:24:21:a4:cc"
+      - run: ssh-keyscan 45.77.244.152 >> ~/.ssh/known_hosts
+      - run: sudo apt update
+      - run: sudo apt install rsync
+      - checkout # pull down our git code.
+      - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
+          key: deps1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+      - ruby/install-deps # use the ruby orb to install dependencies
+      - run: RACK_ENV=production bundle exec rake storage:create
+      - run: RACK_ENV=production bundle exec rake assets:compile
+      - run:
+          name: deploy
+          command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git ~/oivan/ root@45.77.244.152:/srv/oivan/prd
+      - run:
+          name: restart services
+          command: ssh root@45.77.244.152 'sudo systemctl restart oivan_prd.service'
+  
+  # deploy:
+  #   executor: my-executor
+  #   working_directory: ~/oivan
+  #   steps:
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "a7:6e:c6:74:f5:3a:1a:e4:4c:87:2e:96:24:21:a4:cc"
+  #     - run: ssh-keyscan 45.77.244.152 >> ~/.ssh/known_hosts
+  #     - run: sudo apt update
+  #     - run: sudo apt install rsync
+  #     - checkout # pull down our git code.
+  #     - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
+  #         key: deps1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+  #     - ruby/install-deps # use the ruby orb to install dependencies
+  #     - run:
+  #         name: deploy
+  #         command: |
+  #           if [ "${CIRCLE_BRANCH}" = "main" ]; then
+  #             rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git ~/oivan/ root@45.77.244.152:/srv/oivan/prd
+  #           elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
+  #             rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git ~/oivan/ root@45.77.244.152:/srv/oivan/dev
+  #           else
+  #             echo "Not deploy branches, dry run only"
+  #           fi
+  #     - run:
+  #         name: restart services
+  #         command: |
+  #           if [ "${CIRCLE_BRANCH}" = "main" ]; then
+  #             ssh root@45.77.244.152 'sudo systemctl restart oivan_prd.service'
+  #           elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
+  #             ssh root@45.77.244.152 'sudo systemctl restart oivan_dev.service'
+  #           else
+  #             echo "Not deploy branches, dry run only"
+  #           fi
 
 # We use workflows to orchestrate the jobs that we declared above.
 workflows:
@@ -87,3 +142,12 @@ workflows:
       - deploy:
           requires:
             - test
+          jobs:
+            - deploy-dev:
+                filters:
+                  branches:
+                    only: develop
+            - deploy-prd:
+                filters:
+                  branches:
+                    only: main

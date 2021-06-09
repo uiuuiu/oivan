@@ -11,10 +11,9 @@ After=network.target
 # as of Puma 5.1 or later.
 # On earlier versions of Puma or JRuby, change this to `Type=simple` and remove
 # the `WatchdogSec` line.
-Type=notify
+Type=simple
 
 # If your Puma process locks up, systemd's watchdog will restart it within seconds.
-WatchdogSec=10
 
 # Preferably configure a non-privileged user
 # User=
@@ -22,7 +21,7 @@ WatchdogSec=10
 # The path to the your application code root directory.
 # Also replace the "<YOUR_APP_PATH>" place holders below with this path.
 # Example /home/username/myapp
-WorkingDirectory=/srv/oivan
+WorkingDirectory=/srv/oivan/prd
 
 # Helpful for debugging socket activation, etc.
 # Environment=PUMA_DEBUG=1
@@ -30,7 +29,7 @@ WorkingDirectory=/srv/oivan
 # SystemD will not run puma even if it is in your path. You must specify
 # an absolute URL to puma. For example /usr/local/bin/puma
 # Alternatively, create a binstub with `bundle binstubs puma --path ./sbin` in the WorkingDirectory
-ExecStart=/srv/oivan/sbin/puma -C /srv/oivan/puma/production.rb
+ExecStart=/srv/oivan/prd/sbin/puma /srv/oivan/prd/config.ru -C /srv/oivan/prd/puma/production.rb -e production
 
 # Variant: Rails start.
 # ExecStart=/<FULLPATH>/bin/puma -C <YOUR_APP_PATH>/config/puma.rb ../config.ru
@@ -39,8 +38,7 @@ ExecStart=/srv/oivan/sbin/puma -C /srv/oivan/puma/production.rb
 # Variant: Specify directives inline.
 # ExecStart=/<FULLPATH>/puma -b tcp://0.0.0.0:9292 -b ssl://0.0.0.0:9293?key=key.pem&cert=cert.pem
 
-
+PIDFile=/srv/shared/prd/tmp/pids/puma_prd.pid
 Restart=always
-
 [Install]
 WantedBy=multi-user.target

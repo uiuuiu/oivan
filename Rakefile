@@ -42,8 +42,8 @@ namespace :storage do
       model_name = File.basename(file, ".*")
       
       storage_file_path = case ENV["RACK_ENV"]
-        when "production"
-          "#{App.settings.root}/storage/production/#{model_name.pluralize}.yml"
+        # when "production"
+        #   "#{App.settings.root}/storage/production/#{model_name.pluralize}.yml"
         when "test"
           "#{App.settings.root}/storage/test/#{model_name.pluralize}.yml"
         else
