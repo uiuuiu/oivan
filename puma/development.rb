@@ -21,3 +21,10 @@ port ENV.fetch('PORT') { 3000 }
 # processes).
 #
 workers ENV.fetch('WORKERS') { 1 }.to_i
+
+shared_dir = "/srv/shared/dev"
+
+stdout_redirect "#{shared_dir}/tmp/log/puma.stdout.log", "#{shared_dir}/tmp/log/puma.stderr.log", true
+# Set master PID and state locations
+pidfile "#{shared_dir}/tmp/pids/puma.pid"
+state_path "#{shared_dir}/tmp/pids/puma.state"
