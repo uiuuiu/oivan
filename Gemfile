@@ -20,9 +20,9 @@ gem 'activesupport', '~> 5.0', '>= 5.0.0.1'
 gem 'compass'
 gem 'puma'
 
-group :development do
-    gem 'pry'
-end
+# group :development do
+#     gem 'pry'
+# end
 
 group :test do
     gem 'rspec'
