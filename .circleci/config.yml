@@ -67,10 +67,10 @@ jobs:
       - run: bundle exec rake storage:create
       - run:
           name: deploy
-          command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git --exclude .bundle ~/oivan/ root@45.77.244.152:/srv/oivan/dev
+          command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git --exclude .bundle ~/oivan/ oivan1@45.77.244.152:/srv/oivan/dev
       - run:
           name: make bundle in server and restart services
-          command: ssh root@45.77.244.152 'cd /srv/oivan/dev && bundle install --path=vendor/bundle && sudo systemctl restart oivan_dev.service'
+          command: ssh oivan1@45.77.244.152 'cd /srv/oivan/dev && bundle install --path=vendor/bundle && sudo systemctl restart oivan_dev.service'
 
   deploy-prd:
     executor: my-executor
@@ -90,10 +90,10 @@ jobs:
       - run: RACK_ENV=production bundle exec rake assets:compile
       - run:
           name: deploy
-          command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git --exclude .bundle ~/oivan/ root@45.77.244.152:/srv/oivan/prd
+          command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git --exclude .bundle ~/oivan/ oivan1@45.77.244.152:/srv/oivan/prd
       - run:
           name: make bundle in server
-          command: ssh root@45.77.244.152 'cd /srv/oivan/prd && bundle install --path=vendor/bundle && sudo systemctl restart oivan_prd.service'
+          command: ssh oivan1@45.77.244.152 'cd /srv/oivan/prd && bundle install --path=vendor/bundle && sudo systemctl restart oivan_prd.service'
   
   # deploy:
   #   executor: my-executor
