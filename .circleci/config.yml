@@ -70,7 +70,7 @@ jobs:
           command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git --exclude .bundle ~/oivan/ oivan1@45.77.244.152:/srv/oivan/dev
       - run:
           name: make bundle in server and restart services
-          command: ssh oivan1@45.77.244.152 'cd /srv/oivan/dev && ./setup/dev.sh'
+          command: ssh oivan1@45.77.244.152 'cd /srv/shared && ./setup/dev.sh'
 
   deploy-prd:
     executor: my-executor
@@ -93,7 +93,7 @@ jobs:
           command: rsync -e "ssh -o StrictHostKeyChecking=no" -arvc --exclude .git --exclude .bundle ~/oivan/ oivan1@45.77.244.152:/srv/oivan/prd
       - run:
           name: make bundle in server
-          command: ssh oivan1@45.77.244.152 'cd /srv/oivan/prd && ./setup/prd.sh'
+          command: ssh oivan1@45.77.244.152 'cd /srv/shared && ./setup/prd.sh'
   
   # deploy:
   #   executor: my-executor
