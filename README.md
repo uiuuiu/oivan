@@ -21,3 +21,4 @@
   1.  run `bundle install`
   2.  run `RACK_ENV=test rake storage:create`
   3.  run `rspec [file_path]`
+### Testing
